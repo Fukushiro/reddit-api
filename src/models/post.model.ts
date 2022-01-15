@@ -31,9 +31,18 @@ export const PostModel = Database.define(
 
 PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
 
-export async function createPostModel({ title }: { title: string }) {
+export async function createPostModel({
+  title,
+  subredditid,
+}: {
+  title: string;
+  subredditid: number;
+}) {
   try {
-    const ret = await PostModel.create({ title: title });
+    const ret = await PostModel.create({
+      title: title,
+      subredditid: subredditid,
+    });
 
     return ret;
   } catch (e) {

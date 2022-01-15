@@ -7,14 +7,18 @@ export async function createPostController(
   res: express.Response,
   next: express.NextFunction
 ) {
-  if (!checkNull([req.body.title])) {
+  if (!checkNull([req.body.title, req.body.subredditid])) {
     return res
       .status(400)
       .json({ message: 'There are some missing parameters' });
   }
   const title = req.body.title;
+  const subredditid = req.body.subredditid;
 
-  const worked = await createPostModel({ title: title });
+  const worked = await createPostModel({
+    title: title,
+    subredditid: subredditid,
+  });
   if (worked) {
     return res.status(200).json({ message: 'Success' });
   } else {
