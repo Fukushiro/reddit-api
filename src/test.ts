@@ -4,12 +4,29 @@ import { Database } from './models';
 
 const queryInterface = Database.getQueryInterface();
 async function testeUp() {
-  queryInterface.addColumn('post', 'subredditid', {
-    type: Sequelize.INTEGER,
-    references: { key: 'id', model: 'subreddit' },
+  queryInterface.createTable('user', {
+    id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    username: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    password: { type: Sequelize.STRING(500), allowNull: false },
+    createdAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
   });
 }
 
 async function testeDown() {
-  queryInterface.removeColumn('post', 'subredditid');
+  queryInterface.dropTable('user');
 }

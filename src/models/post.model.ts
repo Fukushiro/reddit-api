@@ -55,5 +55,8 @@ export async function getPostByIdModel(id: number) {
 }
 
 export async function getPostsBySubredditModel(idSubreddit: number) {
-  return await PostModel.findAll({ where: { subredditid: idSubreddit } });
+  return await PostModel.findAll({
+    where: { subredditid: idSubreddit },
+    attributes: ['id', 'title', 'upvotes', 'downvotes', 'createdAt'],
+  });
 }
