@@ -8,7 +8,7 @@ interface IPost {
   downvotes: number;
 }
 
-export const PostModel = Database.define(
+const PostModel = Database.define(
   'post',
   {
     title: {
@@ -25,10 +25,15 @@ export const PostModel = Database.define(
       allowNull: false,
       defaultValue: 0,
     },
+    subredditid: {
+      type: Sequelize.INTEGER,
+      references: { key: 'id', model: 'subreddit' },
+    },
   },
   { freezeTableName: true }
 );
 
+SubredditModel.hasMany(PostModel, { as: 'posts', foreignKey: 'subredditid' });
 PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
 
 export async function createPostModel({
@@ -60,3 +65,5 @@ export async function getPostsBySubredditModel(idSubreddit: number) {
     attributes: ['id', 'title', 'upvotes', 'downvotes', 'createdAt'],
   });
 }
+
+export { PostModel };

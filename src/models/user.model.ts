@@ -1,8 +1,9 @@
 import { Database } from '.';
 import { DataTypes as Sequelize } from 'sequelize';
 import { encript } from '../services/user.service';
+import { SubredditModel } from './subreddit.model';
 const bcrypt = require('bcrypt');
-const UserModel = Database.define(
+export const UserModel = Database.define(
   'user',
   {
     username: {
@@ -36,18 +37,28 @@ export async function createUserModel({
   }
 }
 
-export async function getUserByIdModel(id: number) {
-  return await UserModel.findByPk(id);
+export async function getUserByIdModel(id: number): Promise<any> {
+  return await UserModel.findByPk(id, {
+    include: [
+      {
+        model: SubredditModel,
+        attributes: ['id', 'nome', 'subscribes'],
+      },
+    ],
+  });
 }
 
 export async function autenticateUserModel(username: string, password: string) {
-  const user: any = await UserModel.findOne({ where: { username: username } });
+  const user: any = await UserModel.findOne({
+    where: { username: username },
+    include: [{ model: SubredditModel, attributes: ['nome', 'subscribes'] }],
+    attributes: ['id', 'username', 'password'],
+  });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return null;
   }
+  user.password = null;
+  console.log('user', user);
 
-  return {
-    id: user.id,
-    username: user.username,
-  };
+  return user;
 }

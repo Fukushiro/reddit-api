@@ -1,6 +1,7 @@
 import { Database } from '.';
 import { DataTypes as Sequelize } from 'sequelize';
 import { PostModel } from './post.model';
+import { UserModel } from './user.model';
 
 interface ISubreddit {
   id: number;
@@ -24,6 +25,8 @@ export const SubredditModel = Database.define(
   { freezeTableName: true }
 );
 
+// PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
+
 export async function createSubredditModel({ nome }: { nome: string }) {
   try {
     const ret = await SubredditModel.create({ nome: nome, subscribes: 0 });
@@ -35,5 +38,13 @@ export async function createSubredditModel({ nome }: { nome: string }) {
 }
 
 export async function getSubredditByIdModel(id: number) {
-  return await SubredditModel.findByPk(id);
+  return await SubredditModel.findByPk(id, {
+    include: [
+      {
+        model: PostModel,
+        as: 'posts',
+        attributes: ['id', 'title', 'upvotes', 'downvotes'],
+      },
+    ],
+  });
 }

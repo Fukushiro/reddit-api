@@ -38,14 +38,12 @@ export async function getSubreddit(
   }
   const id: number = Number(req.params.id);
   const subreddit: any = await getSubredditByIdModel(id);
+  console.log('subreddit', subreddit);
+
   if (subreddit) {
     return res.status(200).json({
       message: 'Success',
-      subreddit: {
-        id: subreddit.id,
-        nome: subreddit.nome,
-        subscribes: subreddit.subscribes,
-      },
+      subreddit: subreddit,
     });
   } else {
     return res.status(400).json({ message: 'Failure', subreddit: null });

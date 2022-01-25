@@ -47,6 +47,7 @@ export async function getPostByIdController(
   if (post) {
     return res.status(200).json({
       message: 'Success',
+      p: post,
       post: {
         id: post.id,
         title: post.title,
