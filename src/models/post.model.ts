@@ -29,6 +29,11 @@ const PostModel = Database.define(
       type: Sequelize.INTEGER,
       references: { key: 'id', model: 'subreddit' },
     },
+    text: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   { freezeTableName: true }
 );
@@ -39,14 +44,17 @@ PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
 export async function createPostModel({
   title,
   subredditid,
+  text,
 }: {
   title: string;
   subredditid: number;
+  text?: string;
 }) {
   try {
     const ret = await PostModel.create({
       title: title,
       subredditid: subredditid,
+      text: !!text ? text : null,
     });
 
     return ret;
@@ -62,7 +70,7 @@ export async function getPostByIdModel(id: number) {
 export async function getPostsBySubredditModel(idSubreddit: number) {
   return await PostModel.findAll({
     where: { subredditid: idSubreddit },
-    attributes: ['id', 'title', 'upvotes', 'downvotes', 'createdAt'],
+    attributes: ['id', 'title', 'upvotes', 'downvotes', 'createdAt', 'text'],
   });
 }
 

@@ -4,25 +4,33 @@ import { Database } from './models';
 
 const queryInterface = Database.getQueryInterface();
 async function testeUp() {
-  queryInterface.createTable('usersubreddit', {
+  queryInterface.createTable('userupvotepost', {
     userid: {
       type: Sequelize.INTEGER,
       references: { key: 'id', model: 'user' },
       primaryKey: true,
     },
-    subredditid: {
+    postid: {
       type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'subreddit' },
+      references: { key: 'id', model: 'post' },
       primaryKey: true,
     },
-    favorite: {
+    upvote: {
       type: Sequelize.INTEGER,
-      allowNull: true,
       defaultValue: 0,
+      allowNull: false,
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+      allowNull: false,
     },
   });
 }
 
 async function testeDown() {
-  queryInterface.dropTable('usersubreddit');
+  queryInterface.dropTable('userupvotepost');
 }

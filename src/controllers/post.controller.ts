@@ -19,10 +19,11 @@ export async function createPostController(
   }
   const title = req.body.title;
   const subredditid = req.body.subredditid;
-
+  const text = !!req.body?.text ? req.body?.text : null;
   const worked = await createPostModel({
     title: title,
     subredditid: subredditid,
+    text: text,
   });
   if (worked) {
     return res.status(200).json({ message: 'Success' });
