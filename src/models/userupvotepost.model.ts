@@ -1,8 +1,12 @@
 import { Database } from '.';
-import { DataTypes as Sequelize } from 'sequelize';
+import { col, DataTypes as Sequelize, fn } from 'sequelize';
 import { UserModel } from './user.model';
 import { SubredditModel } from './subreddit.model';
-
+export interface IUserUpvotePost {
+  userid: number;
+  postid: number;
+  upvote: number;
+}
 const UserUpvotePost = Database.define(
   'userupvotepost',
   {
@@ -47,7 +51,7 @@ export async function createUserUpvotePostModel({
     return null;
   }
 }
-
+//avaliar
 export async function avaliateUserUpvotePostModel({
   userid,
   postid,
@@ -74,4 +78,38 @@ export async function avaliateUserUpvotePostModel({
     { upvote: upvote },
     { where: { userid: userid, postid: postid } }
   );
+}
+
+//get avaliations
+export async function getUserUpvotePostAllModel({
+  postid,
+}: {
+  postid: number;
+}): Promise<any> {
+  return await UserUpvotePost.findAll({
+    where: { postid: postid },
+  });
+}
+
+export async function getUserUpvotePostUpvoteSumModel({
+  postid,
+}: {
+  postid: number;
+}) {
+  return await UserUpvotePost.findAll({
+    where: { postid: postid },
+    attributes: [[fn('sum', col('upvote')), 'upvotes']],
+  });
+}
+
+export async function getUserUpvotePostAvaliationModel({
+  postid,
+  userid,
+}: {
+  postid: number;
+  userid: number;
+}) {
+  return await UserUpvotePost.findOne({
+    where: { postid: postid, userid: userid },
+  });
 }
