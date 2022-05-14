@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts",
-    "createDb:dev": "npx sequelize-cli db:create --env development",
-    "migrateDb:dev": "npx sequelize-cli db:migrate --env development"
+    "createDb:dev": "sequelize db:create --env development",
+    "migrateDb:dev": "sequelize db:migrate --env development",
+    "db": "sequelize"
   },
   "keywords": [],
   "author": "",
