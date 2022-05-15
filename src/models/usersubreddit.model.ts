@@ -71,3 +71,20 @@ export async function userIsInSubredditModel({
     return null;
   }
 }
+export async function removeUserFromSubredditModel({
+  userid,
+  subredditid,
+}: {
+  userid: number;
+  subredditid: number;
+}) {
+  try {
+    const ret = await UserSubredditModel.destroy({
+      where: { userid: userid, subredditid: subredditid },
+    });
+
+    return ret;
+  } catch (e) {
+    return null;
+  }
+}
