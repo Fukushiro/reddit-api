@@ -1,6 +1,6 @@
-import { Database } from '.';
-import { DataTypes as Sequelize } from 'sequelize';
-import { SubredditModel } from './subreddit.model';
+import { Database } from ".";
+import { DataTypes as Sequelize } from "sequelize";
+import { SubredditModel } from "./subreddit.model";
 interface IPost {
   id: number;
   title: string;
@@ -9,7 +9,7 @@ interface IPost {
 }
 
 const PostModel = Database.define(
-  'post',
+  "post",
   {
     title: {
       type: Sequelize.STRING,
@@ -27,7 +27,7 @@ const PostModel = Database.define(
     },
     subredditid: {
       type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'subreddit' },
+      references: { key: "id", model: "subreddit" },
     },
     text: {
       type: Sequelize.TEXT,
@@ -38,8 +38,8 @@ const PostModel = Database.define(
   { freezeTableName: true }
 );
 
-SubredditModel.hasMany(PostModel, { as: 'posts', foreignKey: 'subredditid' });
-PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
+SubredditModel.hasMany(PostModel, { as: "posts", foreignKey: "subredditid" });
+PostModel.belongsTo(SubredditModel, { foreignKey: "subredditid" });
 
 export async function createPostModel({
   title,
@@ -70,7 +70,10 @@ export async function getPostByIdModel(id: number) {
 export async function getPostsBySubredditModel(idSubreddit: number) {
   return await PostModel.findAll({
     where: { subredditid: idSubreddit },
-    attributes: ['id', 'title', 'upvotes', 'downvotes', 'createdAt', 'text'],
+    attributes: ["id", "title", "upvotes", "downvotes", "createdAt", "text"],
+    order: [["createdAt", "DESC"]],
+    // limit: 10,
+    // offset: 0,
   });
 }
 
