@@ -53,3 +53,38 @@ export async function createUserSubredditModel({
     return null;
   }
 }
+
+export async function userIsInSubredditModel({
+  userid,
+  subredditid,
+}: {
+  userid: number;
+  subredditid: number;
+}) {
+  try {
+    const ret = await UserSubredditModel.findAll({
+      where: { userid: userid, subredditid: subredditid },
+    });
+
+    return ret;
+  } catch (e) {
+    return null;
+  }
+}
+export async function removeUserFromSubredditModel({
+  userid,
+  subredditid,
+}: {
+  userid: number;
+  subredditid: number;
+}) {
+  try {
+    const ret = await UserSubredditModel.destroy({
+      where: { userid: userid, subredditid: subredditid },
+    });
+
+    return ret;
+  } catch (e) {
+    return null;
+  }
+}

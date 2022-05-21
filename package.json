@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts",
     "createDb:dev": "sequelize db:create --env development",
-    "migrateDb:dev": "sequelize db:migrate --env development"
+    "migrateDb:dev": "sequelize db:migrate --env development",
+    "db": "sequelize"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,6 @@
     "nodemon": "^2.0.15",
     "sequelize": "^6.13.0",
     "sqlite3": "^5.0.2"
-   
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -28,6 +28,5 @@
     "@types/express": "^4.17.13",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
-    
   }
 }

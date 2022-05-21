@@ -1,5 +1,5 @@
 import { Database } from '.';
-import { DataTypes as Sequelize } from 'sequelize';
+import { DataTypes as Sequelize, Op } from 'sequelize';
 import { PostModel } from './post.model';
 import { UserModel } from './user.model';
 
@@ -46,5 +46,12 @@ export async function getSubredditByIdModel(id: number) {
         attributes: ['id', 'title', 'upvotes', 'downvotes'],
       },
     ],
+  });
+}
+
+export async function getSubredditByNameLikeModel(name: string) {
+  const query = `%${name}%`;
+  return await SubredditModel.findAll({
+    where: { nome: { [Op.like]: query } },
   });
 }
