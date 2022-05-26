@@ -1,36 +1,22 @@
-import { Op } from 'sequelize/dist';
-import { DataTypes as Sequelize } from 'sequelize/types';
-import { Database } from './models';
+import { Op } from "sequelize/dist";
+import { DataTypes as Sequelize } from "sequelize/types";
+import { Database } from "./models";
 
 const queryInterface = Database.getQueryInterface();
 async function testeUp() {
-  queryInterface.createTable('userupvotepost', {
-    userid: {
-      type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'user' },
-      primaryKey: true,
-    },
-    postid: {
-      type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'post' },
-      primaryKey: true,
-    },
-    upvote: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-    },
-    createdAt: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
+  queryInterface.addColumn("subreddit", "about", {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: "",
+  });
+  queryInterface.addColumn("subreddit", "title", {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: "",
   });
 }
 
 async function testeDown() {
-  queryInterface.dropTable('userupvotepost');
+  queryInterface.removeColumn("subreddit", "about");
+  queryInterface.removeColumn("subreddit", "title");
 }

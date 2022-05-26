@@ -1,29 +1,38 @@
-import express from 'express';
-import { checkNull } from '.';
+import express from "express";
+import { checkNull } from ".";
 import {
   createSubredditModel,
   getSubredditByIdModel,
   getSubredditByNameLikeModel,
-} from '../models/subreddit.model';
+} from "../models/subreddit.model";
 
 export async function createSubreddit(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) {
-  if (!checkNull([req?.body?.nome])) {
+  if (!checkNull([req?.body?.nome, req?.body?.title, req?.body?.about])) {
     return res
       .status(400)
-      .json({ message: 'There are some missing parameters' });
+      .json({ message: "There are some missing parameters" });
   }
 
-  const name = req.body.nome;
-  const worked = await createSubredditModel({ nome: name });
+  const name: string = req.body.nome;
+  const title: string = req.body.title;
+  const about: string = req.body.about;
+  console.log(title, about);
+
+  const worked = await createSubredditModel({
+    nome: name,
+    title: title,
+    about: about,
+  });
+  console.log(worked);
 
   if (worked) {
-    return res.status(200).json({ message: 'Success' });
+    return res.status(200).json({ message: "Success" });
   } else {
-    return res.status(400).json({ message: 'Failure' });
+    return res.status(400).json({ message: "Failure" });
   }
 }
 
@@ -33,27 +42,27 @@ export async function getSubreddit(
   next: express.NextFunction
 ) {
   try {
-    console.log('req param id', req.params.id);
+    console.log("req param id", req.params.id);
 
     if (!checkNull([req.params.id])) {
       return res
         .status(400)
-        .json({ message: 'There are some missing parameters' });
+        .json({ message: "There are some missing parameters" });
     }
     const id: number = Number(req.params.id);
     const subreddit: any = await getSubredditByIdModel(id);
-    console.log('subreddit', subreddit);
+    console.log("subreddit", subreddit);
 
     if (subreddit) {
       return res.status(200).json({
-        message: 'Success',
+        message: "Success",
         subreddit: subreddit,
       });
     } else {
-      return res.status(400).json({ message: 'Failure', subreddit: null });
+      return res.status(400).json({ message: "Failure", subreddit: null });
     }
   } catch (e) {
-    return res.status(400).json({ message: 'Failure', subreddit: null });
+    return res.status(400).json({ message: "Failure", subreddit: null });
   }
 }
 
@@ -65,7 +74,7 @@ export async function getSubredditByNameLikeController(
   if (!checkNull([req.params.name])) {
     return res
       .status(400)
-      .json({ message: 'There are some missing parameters' });
+      .json({ message: "There are some missing parameters" });
   }
   // getSubredditByNameLike;
   const name = req.params.name;
@@ -73,10 +82,10 @@ export async function getSubredditByNameLikeController(
   const subreddit: any = await getSubredditByNameLikeModel(name);
   if (subreddit) {
     return res.status(200).json({
-      message: 'Success',
+      message: "Success",
       subreddit: subreddit,
     });
   } else {
-    return res.status(400).json({ message: 'Failure', subreddit: null });
+    return res.status(400).json({ message: "Failure", subreddit: null });
   }
 }

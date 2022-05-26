@@ -1,7 +1,7 @@
-import { Database } from '.';
-import { DataTypes as Sequelize, Op } from 'sequelize';
-import { PostModel } from './post.model';
-import { UserModel } from './user.model';
+import { Database } from ".";
+import { DataTypes as Sequelize, Op } from "sequelize";
+import { PostModel } from "./post.model";
+import { UserModel } from "./user.model";
 
 interface ISubreddit {
   id: number;
@@ -10,12 +10,18 @@ interface ISubreddit {
 }
 
 export const SubredditModel = Database.define(
-  'subreddit',
+  "subreddit",
   {
     nome: {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "",
+    },
+    about: { type: Sequelize.STRING, allowNull: false, defaultValue: "" },
     subscribes: {
       type: Sequelize.NUMBER,
       allowNull: false,
@@ -27,12 +33,27 @@ export const SubredditModel = Database.define(
 
 // PostModel.belongsTo(SubredditModel, { foreignKey: 'subredditid' });
 
-export async function createSubredditModel({ nome }: { nome: string }) {
+export async function createSubredditModel({
+  nome,
+  about,
+  title,
+}: {
+  nome: string;
+  title: string;
+  about: string;
+}) {
   try {
-    const ret = await SubredditModel.create({ nome: nome, subscribes: 0 });
+    const ret = await SubredditModel.create({
+      nome: nome,
+      subscribes: 0,
+      title: title,
+      about: about,
+    });
 
     return ret;
   } catch (e) {
+    console.log(e);
+
     return null;
   }
 }
@@ -42,8 +63,8 @@ export async function getSubredditByIdModel(id: number) {
     include: [
       {
         model: PostModel,
-        as: 'posts',
-        attributes: ['id', 'title', 'upvotes', 'downvotes'],
+        as: "posts",
+        attributes: ["id", "title", "upvotes", "downvotes"],
       },
     ],
   });
