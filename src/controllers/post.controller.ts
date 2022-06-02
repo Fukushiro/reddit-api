@@ -52,12 +52,13 @@ export async function getPostByIdController(
     let user: any = null;
     if (post.userid != null) {
       user = await getUserByIdModel(post.userid);
+      user.password = null;
     }
 
     if (post) {
       return res.status(200).json({
         message: "Success",
-        p: post,
+        // p: post,
         post: {
           id: post.id,
           title: post.title,
