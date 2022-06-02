@@ -1,19 +1,19 @@
-import { Database } from '.';
-import { DataTypes as Sequelize } from 'sequelize';
-import { UserModel } from './user.model';
-import { SubredditModel } from './subreddit.model';
+import { Database } from ".";
+import { DataTypes as Sequelize } from "sequelize";
+import { UserModel } from "./user.model";
+import { SubredditModel } from "./subreddit.model";
 
 const UserSubredditModel = Database.define(
-  'usersubreddit',
+  "usersubreddit",
   {
     userid: {
       type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'user' },
+      references: { key: "id", model: "user" },
       primaryKey: true,
     },
     subredditid: {
       type: Sequelize.INTEGER,
-      references: { key: 'id', model: 'subreddit' },
+      references: { key: "id", model: "subreddit" },
       primaryKey: true,
     },
     favorite: {
@@ -26,12 +26,12 @@ const UserSubredditModel = Database.define(
 );
 
 UserModel.belongsToMany(SubredditModel, {
-  through: 'usersubreddit',
-  foreignKey: 'userid',
+  through: "usersubreddit",
+  foreignKey: "userid",
 });
 SubredditModel.belongsToMany(UserModel, {
-  through: 'usersubreddit',
-  foreignKey: 'subredditid',
+  through: "usersubreddit",
+  foreignKey: "subredditid",
 });
 
 // funções

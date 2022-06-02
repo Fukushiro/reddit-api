@@ -4,19 +4,15 @@ import { Database } from "./models";
 
 const queryInterface = Database.getQueryInterface();
 async function testeUp() {
-  queryInterface.addColumn("subreddit", "about", {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
-  });
-  queryInterface.addColumn("subreddit", "title", {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
+  queryInterface.addColumn("post", "user", {
+    type: Sequelize.INTEGER,
+    references: {
+      model: "user",
+      key: "id",
+    },
   });
 }
 
 async function testeDown() {
-  queryInterface.removeColumn("subreddit", "about");
-  queryInterface.removeColumn("subreddit", "title");
+  queryInterface.removeColumn("post", "user");
 }
