@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  app:
+    container_name: dockerized-node-app
+    image: node:17-alpine
+    command: sh -c "yarn install && yarn start"
+    restart: always
+    working_dir: /app
+
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+      - ignore:/app/node_modules
+#   sqlite3:
+#     image: nouchka/sqlite3:latest
+#     container_name: dockerized-sqlite3
+#     volumes:
+#       - ./dev:/dev
+volumes:
+  ignore:

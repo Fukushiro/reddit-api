@@ -1,10 +1,10 @@
-import express from 'express';
-import { checkNull } from '.';
+import express from "express";
+import { checkNull } from ".";
 import {
   autenticateUserModel,
   createUserModel,
   getUserByIdModel,
-} from '../models/user.model';
+} from "../models/user.model";
 
 export async function createUserController(
   req: express.Request,
@@ -14,7 +14,7 @@ export async function createUserController(
   if (!checkNull([req.body.username, req.body.password])) {
     return res
       .status(400)
-      .json({ message: 'There are some missing parameters' });
+      .json({ message: "There are some missing parameters" });
   }
   const username = req.body.username;
   const password = req.body.password;
@@ -24,9 +24,9 @@ export async function createUserController(
     password: password,
   });
   if (worked) {
-    return res.status(200).json({ message: 'Success' });
+    return res.status(200).json({ message: "Success" });
   } else {
-    return res.status(400).json({ message: 'Failure' });
+    return res.status(400).json({ message: "Failure" });
   }
 }
 
@@ -38,7 +38,7 @@ export async function getUserByAuthController(
   if (!checkNull([req.body.username, req.body.password])) {
     return res
       .status(400)
-      .json({ message: 'There are some missing parameters' });
+      .json({ message: "There are some missing parameters" });
   }
   const username: string = req.body.username;
   const password: string = req.body.password;
@@ -47,11 +47,11 @@ export async function getUserByAuthController(
   const user: any = await autenticateUserModel(username, password);
   if (user) {
     return res.status(200).json({
-      message: 'Success',
+      message: "Success",
       user: user,
     });
   } else {
-    return res.status(400).json({ message: 'Failure', user: null });
+    return res.status(400).json({ message: "Failure", user: null });
   }
 }
 
@@ -63,7 +63,7 @@ export async function getUserSubredditController(
   if (!checkNull([req.body.userid])) {
     return res
       .status(400)
-      .json({ message: 'There are some missing parameters' });
+      .json({ message: "There are some missing parameters" });
   }
 
   const userid = req.body.userid;
@@ -73,10 +73,10 @@ export async function getUserSubredditController(
 
   if (user) {
     return res.status(200).json({
-      message: 'Success',
+      message: "Success",
       subreddits: user.subreddits,
     });
   } else {
-    return res.status(400).json({ message: 'Failure', user: null });
+    return res.status(400).json({ message: "Failure", user: null });
   }
 }
